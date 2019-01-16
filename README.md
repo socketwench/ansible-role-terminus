@@ -55,7 +55,7 @@ Including an example of how to use your role (for instance, with variables passe
 
     - hosts: servers
       roles:
-         - { role: socketwench.pantheon-terminus }
+         - { role: socketwench.pantheon_terminus }
 
 ## License
 
