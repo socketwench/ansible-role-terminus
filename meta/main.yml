@@ -1,6 +1,7 @@
 galaxy_info:
+  role_name: pantheon-terminus
   author: socketwench
-  description: your description
+  description: Installs the Pantheon CLI using the official installer
   license: GPLv3
 
   min_ansible_version: 2.4

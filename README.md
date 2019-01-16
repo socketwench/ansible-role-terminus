@@ -1,6 +1,6 @@
 # Ansible Role: Pantheon Terminus
 
-Installs the Pantheon CLI using their installer.
+Installs the Pantheon CLI using the official installer.
 
 ## Requirements
 
