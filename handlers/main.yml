@@ -1,0 +1,8 @@
+---
+- name: delete temp items
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - "{{ _pantheon_installer.path }}"
+  become: yes

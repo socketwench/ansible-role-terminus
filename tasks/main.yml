@@ -1,0 +1,32 @@
+---
+- name: Create a tempfile at which to save the installer
+  tempfile:
+    prefix: "pantheon-terminus-"
+    suffix: ".phar"
+    state: file
+  register: _pantheon_installer
+  notify:
+    - delete temp items 
+  become: yes
+- name: Download the installer
+  get_url:
+    url: "{{ pantheon_terminus_installer_url }}"
+    dest: "{{ _pantheon_installer.path }}"
+    mode: "u=rwx,g=rwx,o=rwx"
+    force: yes
+  become: yes
+- name: Run the installer
+  shell: >
+    {{ pantheon_terminus_php_path | default('php') }}
+    {{ _pantheon_installer.path }}
+    {{ pantheon_terminus_operation | default('install') }}
+    --install-dir={{ pantheon_terminus_install_dir }}
+    {% if (pantheon_terminus_bin_dir is defined) %}
+    --bin-dir={{ pantheon_terminus_bin_dir }}
+    {% endif %}
+    {% if (pantheon_terminus_version is defined) %}
+    --install-version={{ pantheon_terminus_version }}
+    {% endif %}    
+  args:
+    creates: "{{ pantheon_terminus_install_dir }}/terminus"
+  become: yes
