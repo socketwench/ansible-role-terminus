@@ -1,4 +1,5 @@
 ---
+# First, download the installer to a temp file.
 - name: Create a tempfile at which to save the installer
   tempfile:
     prefix: "pantheon-terminus-"
@@ -15,6 +16,8 @@
     mode: "u=rwx,g=rwx,o=rwx"
     force: yes
   become: yes
+
+# Run the downloaded file.
 - name: Run the installer
   shell: >
     {{ pantheon_terminus_php_path | default('php') }}
@@ -27,6 +30,19 @@
     {% if (pantheon_terminus_version is defined) %}
     --install-version={{ pantheon_terminus_version }}
     {% endif %}    
-  args:
-    creates: "{{ pantheon_terminus_install_dir }}/terminus"
   become: yes
+  
+# We can't use shell's `creates` to check the installation, as Ansible skips
+# shell plays that already meet the creates requirement. This would mean we 
+# can't use update workflows.
+# 
+# Instead, we'll check if the file exists manually.
+- name: Check if Terminus is installed
+  stat:
+    path: "{{ pantheon_terminus_install_dir }}/terminus"
+  register: _patheon_terminus_exe
+- name: Fail if terminus command does not exist
+  fail:
+    msg: "Terminus failed to install"
+  when: _patheon_terminus_exe.stat.exists == False
+
