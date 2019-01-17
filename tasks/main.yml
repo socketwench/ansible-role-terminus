@@ -1,7 +1,7 @@
 ---
-# 
+#
 # First, download the installer to a temp file.
-# 
+#
 - name: Create a tempfile at which to save the installer
   tempfile:
     prefix: "pantheon-terminus-"
@@ -34,13 +34,13 @@
     --install-version={{ pantheon_terminus_version }}
     {% endif %}
   become: yes
-#  
+#
 # We can't use shell's `creates` to check the installation, as Ansible skips
 # shell plays that already meet the creates requirement. This would mean we 
 # can't use update workflows.
-# 
+#
 # Instead, we'll check if the file exists manually.
-# 
+#
 - name: Check if Terminus is installed
   stat:
     path: "{{ pantheon_terminus_install_dir }}/terminus"
