@@ -9,7 +9,7 @@
     state: file
   register: _pantheon_installer
   notify:
-    - delete temp items 
+    - delete temp items
   become: yes
 - name: Download the installer
   get_url:
@@ -36,7 +36,7 @@
   become: yes
 #
 # We can't use shell's `creates` to check the installation, as Ansible skips
-# shell plays that already meet the creates requirement. This would mean we 
+# shell plays that already meet the creates requirement. This would mean we
 # can't use update workflows.
 #
 # Instead, we'll check if the file exists manually.
